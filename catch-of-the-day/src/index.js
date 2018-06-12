@@ -8,4 +8,4 @@ import './css/style.css';
 
 
 
-render (<Router/>, document.querySelector('#main'));
+render (<Router />, document.querySelector('#main'));
