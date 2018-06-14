@@ -20,31 +20,13 @@ class Inventory extends React.Component {
     owner: null
   };
 
-componentDidMount() {
+  componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-        if(user)
-        this.authHandler({user});
+      if (user) this.authHandler({ user });
     });
-};
+  };
 
-// authHandler = async authData => {
-//     //1. Look up the current store in the firebase database
-//     const store = await base.fetch(this.props.storeId, { context: this });
-//     //2. Claim it if there is no owner
-//     if (!store.owner) {
-//       //save it as our own
-//       await base.post(`${this.props.storeId}/owner`, {
-//         date: authData.user.uid
-//       });
-//     }
-//     //3. Set the state of the
-//     this.setState({
-//       uid: authData.user.id,
-//       owner: store.owner || authData.user.id
-//     });
-//   };
-
-authHandler = async authData => {
+  authHandler = async authData => {
     // 1 .Look up the current store in the firebase database
     const store = await base.fetch(this.props.storeId, { context: this });
     console.log(store);
@@ -62,15 +44,7 @@ authHandler = async authData => {
     });
   };
 
-//   authenticate = provider => {
-//     const authProvider = new firebase.auth[`${provider}AuthProvider`]();
-//     firebaseApp
-//       .auth()
-//       .signInWithPopup(authProvider)
-//       .then(this.authHandler);
-//   };
-
-authenticate = provider => {
+  authenticate = provider => {
     const authProvider = new firebase.auth[`${provider}AuthProvider`]();
     firebaseApp
       .auth()
@@ -79,26 +53,26 @@ authenticate = provider => {
   };
 
   logout = async () => {
-      console.log("logging out");
-      await firebase.auth().signOut();
-      this.setState({ uid:null });
-  }
+    console.log("logging out");
+    await firebase.auth().signOut();
+    this.setState({ uid: null });
+  };
 
   render() {
-      const logout = <button onClick={this.logout}>Log out</button>
+    const logout = <button onClick={this.logout}>Log out</button>;
     //1. Check if they are logged in
     if (!this.state.uid) {
       return <Login authenticate={this.authenticate} />;
     }
 
     //2. Check if they are not the owner of the store
-    if(this.state.uid !== this.state.owner) {
-        return (
-            <div>
-                <p>Sorry, you are not the owner!</p>
-                {logout}
-            </div>
-        )
+    if (this.state.uid !== this.state.owner) {
+      return (
+        <div>
+          <p>Sorry, you are not the owner!</p>
+          {logout}
+        </div>
+      );
     }
 
     //3.They must be the owner, just render the inventory
